@@ -1,13 +1,31 @@
 \documentclass[a4paper]{article}
-\usepackage{forest}
 \usepackage{oWoUtils}
+
+% author: 8112887052852
 
 \doc{
 	\struct{
-		[oWo-Syslog
-			[dependencies]
-			[doc]
-			[src]		
+		[oWoSyslog
+			[dependencies
+				[\file{gtest}{opensource community}{submodule}]
+				[\file{CMakeLists.txt}{8112887052852}{build script}]		
+			]
+			[doc
+				[\file{file\_{}registery.tex}{8112887052852}{test}]
+				[\file{oWoUtils.sty}{8112887052852}{LaTeX package}]	
+			]
+			[src
+				[TestoWoSyslog
+					[testfiles]
+					[testresources]
+					[\file{CMakeLists.txt}{8112887052852}{build script}]
+					[\file{main.cpp}{8112887052852}{test source file}]				
+				]
+				[\file{CMakeLists.txt}{8112887052852}{build script}]			
+			]
+			[\file{CMakeLists.txt}{8112887052852}{build script}]
+			[\file{LICENSE}{8112887052852}{license file}]
+			[\file{README.md}{8112887052852}{readme file}]
 		]
 	}
 }
