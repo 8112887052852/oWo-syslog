@@ -1,4 +1,4 @@
-\documentclass[a4paper]{article}
+\documentclass{standalone}
 \usepackage{oWoUtils}
 
 % author: 8112887052852
@@ -8,11 +8,18 @@
 		[oWoSyslog
 			[dependencies
 				[\file{gtest}{opensource community}{submodule}]
-				[\file{CMakeLists.txt}{8112887052852}{build script}]		
+				[\file{CMakeLists.txt}{8112887052852}{build script}]	
+			]
+			[CMake
+				[\file{CMakeLatex}{opensource community}{submodule}]
 			]
 			[doc
+				[\file{CMakeLists.txt}{8112887052852}{build script}]
 				[\file{file\_{}registery.tex}{8112887052852}{test}]
-				[\file{oWoUtils.sty}{8112887052852}{LaTeX package}]	
+				[\file{oWoUtils.sty}{8112887052852}{LaTeX package}]
+			]
+			[documentation
+				[\file{file\_{}registery.pdf}{8112887052852}{documentation output}]			
 			]
 			[src
 				[TestoWoSyslog
