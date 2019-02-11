@@ -4,3 +4,6 @@
 [submodule "CMake/CMakeLatex"]
 	path = CMake/CMakeLatex
 	url = https://github.com/wichtounet/CMakeLatex.git
+[submodule "dependencies/asio"]
+	path = dependencies/asio
+	url = https://github.com/chriskohlhoff/asio.git
