@@ -1,0 +1,36 @@
+\NeedsTeXFormat{LaTeX2e}
+\ProvidesPackage{oWoUtils}[2019/02/10 Utilitary functions for oWoSyslog]
+\RequirePackage{forest}
+
+% author: 8112887052852
+
+\newcommand{\doc}[1]{
+	\begin{document}
+		#1
+	\end{document}
+}
+
+\newcommand{\struct}[1]{
+	\begin{forest}
+		for tree={
+    		font=\ttfamily,
+    		grow'=0,
+    		child anchor=west,
+    		parent anchor=south,
+    		anchor=west,
+    		calign=first,
+    		edge path={
+      			\noexpand\path [draw, \forestoption{edge}]
+      			(!u.south west) +(7.5pt,0) |- node[fill,inner sep=1.25pt] {} (.child anchor)					\forestoption{edge label};
+    		},
+    		before typesetting nodes={
+      			if n=1
+        			{insert before={[,phantom]}}
+        			{}
+    		},
+    		fit=band,
+    		before computing xy={l=15pt},
+  		}
+		#1
+	\end{forest}
+}
