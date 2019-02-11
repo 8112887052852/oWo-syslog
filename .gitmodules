@@ -1,3 +1,6 @@
 [submodule "dependencies/gtest"]
 	path = dependencies/gtest
 	url = https://github.com/google/googletest.git
+[submodule "CMake/CMakeLatex"]
+	path = CMake/CMakeLatex
+	url = https://github.com/wichtounet/CMakeLatex.git
