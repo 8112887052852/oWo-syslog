@@ -7,7 +7,12 @@ set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
 include(GoogleTest)
 
+# latex config
+set(LATEX_OUTPUT_PATH ${PROJECT_SOURCE_DIR}/documentation)
+include(CMake/CMakeLatex/UseLATEX.cmake)
+
 add_subdirectory(dependencies)
+add_subdirectory(doc)
 add_subdirectory(src)
 
 enable_testing()
