@@ -30,3 +30,20 @@
 *.exe
 *.out
 *.app
+
+# documentation
+documentation/
+
+# laTeX output files
+doc/*.pdf
+doc/*.aux
+doc/*.log
+doc/*.dvi
+doc/*.synctex.gz
+
+# output dirs
+build/
+build.debug/
+build.release/
+build-debug/
+build-release/
