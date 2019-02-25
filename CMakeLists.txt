@@ -14,8 +14,27 @@ include(CMake/CMakeLatex/UseLATEX.cmake)
 add_library(header SHARED)
 add_library(cheader SHARED src/header/header.cpp)
 
+add_executable(TestliboWoSyslog)
+target_link_libraries(TestliboWoSyslog
+        gtest
+        gmock
+        asio
+        )
+
 add_subdirectory(dependencies)
 add_subdirectory(doc)
 add_subdirectory(src)
+
+add_custom_target(modern
+        DEPENDS header TestliboWoSyslog)
+
+add_custom_target(old
+        DEPENDS cheader TestliboWoSyslog)
+
+add_custom_target(bin
+        DEPENDS modern old)
+
+add_custom_target(doc
+        DEPENDS pdf)
 
 enable_testing()
