@@ -57,6 +57,8 @@ class
         : uint8_t
 #endif // _MODERN_OWO_SYSLOG_
 {
+    #ifndef _MODERN_OWO_SYSLOG_
+    // use the old syslog header `standard` for retro compatibility
     LOG_EMERG = 0,
     LOG_ALERT = 1,
     LOG_CRIT = 2,
@@ -65,6 +67,19 @@ class
     LOG_NOTICE = 5,
     LOG_INFO = 6,
     LOG_DEBUG = 7
+    #else
+    // use a more modern style
+    emerg = 0,
+    alert = 1,
+    crit = 2,
+    err = 3,
+    warning = 4,
+    notice = 5,
+    info = 6,
+    debug = 7
+    #endif // not _MODERN_OWO_SYSLOG_
 };
+
+
 
 #endif // _OWO_SYSLOG_VER
