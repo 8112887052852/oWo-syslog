@@ -35,6 +35,14 @@
 #ifndef _OWO_SYSLOG_VER
 #define _OWO_SYSLOG_VER 1
 
+#ifndef WIN32
+#define OWOSYSLOG_API
+#elif defined(OWOSYSLOG_EXPORT)
+#define OWOSYSLOG_API __declspec(dllexport)
+#else
+#define OWOSYSLOG_API __declspec(dllimport)
+#endif
+
 #ifdef __cplusplus
 
 #include <cstdarg>
