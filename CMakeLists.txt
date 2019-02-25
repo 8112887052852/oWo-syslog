@@ -21,8 +21,25 @@ target_link_libraries(TestliboWoSyslog
         asio
         )
 
+add_executable(TestHeader)
+target_link_libraries(TestHeader
+	gtest
+	gmock
+	asio
+	header
+	)
+
+add_executable(TestCHeader)
+target_link_libraries(TestCHeader
+	gtest
+	gmock
+	asio
+	cheader
+	)
+
 add_subdirectory(dependencies)
 add_subdirectory(doc)
+add_subdirectory(include)
 add_subdirectory(src)
 
 add_custom_target(modern
