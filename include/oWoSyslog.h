@@ -41,4 +41,30 @@
 #include <stdarg.h>
 #endif
 
+#ifdef __cplusplus
+#if __cplusplus >= 201103L and not defined(DISABLE_MODERN_OWO_SYSLOG)
+#define _MODERN_OWO_SYSLOG_
+#include <cstdint>
+#endif // __cplusplus >= 201103L and not defined(DISABLE_MODERN_OWO_SYSLOG)
+#endif // __cplusplus
+
+enum
+#ifdef _MODERN_OWO_SYSLOG_
+class
+#endif // _MODERN_OWO_SYSLOG_
+        log_priorities
+#ifdef _MODERN_OWO_SYSLOG_
+        : uint8_t
+#endif // _MODERN_OWO_SYSLOG_
+{
+    LOG_EMERG = 0,
+    LOG_ALERT = 1,
+    LOG_CRIT = 2,
+    LOG_ERR = 3,
+    LOG_WARNING = 4,
+    LOG_NOTICE = 5,
+    LOG_INFO = 6,
+    LOG_DEBUG = 7
+};
+
 #endif // _OWO_SYSLOG_VER
