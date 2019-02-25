@@ -11,6 +11,9 @@ include(GoogleTest)
 set(LATEX_OUTPUT_PATH ${PROJECT_SOURCE_DIR}/documentation)
 include(CMake/CMakeLatex/UseLATEX.cmake)
 
+add_library(header SHARED)
+add_library(cheader SHARED src/header/header.cpp)
+
 add_subdirectory(dependencies)
 add_subdirectory(doc)
 add_subdirectory(src)
