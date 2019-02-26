@@ -8,10 +8,7 @@
 #include <oWoSyslog.h>
 
 #ifdef _MODERN_OWO_SYSLOG_
-using syslog::log_facilities;
-using syslog::log_priorities;
-using syslog::make_pri;
-using syslog::pri;
+using namespace syslog;
 #endif
 
 /*!
@@ -50,14 +47,14 @@ struct test_log_priorities : public ::testing::Test
      * \brief   Method to assert that LOG_MAKEPRI(pri, _) results in pri & _
      * \tparam  pri The priority to test against
      */
-    template<log_priorities pri, log_facilities fac
+    template<log_priorities pri>
+    void test_make_pri(log_facilities fac =
     #ifdef _MODERN_OWO_SYSLOG_
-    = syslog::log_facilities::syslog
+    log_facilities::ftp
     #else
-            = LOG_SYSLOG
+            LOG_SYSLOG
     #endif
-    >
-    void test_make_pri()
+    )
     #ifdef _MODERN_OWO_SYSLOG_
     {
         EXPECT_EQ(::syslog::pri(make_pri(fac, pri)), pri);
@@ -70,23 +67,26 @@ struct test_log_priorities : public ::testing::Test
     #endif
 
     /*!
-     * \brief   Method to assert that LOG_MAKEPRI(pri, _) results in pri & _
-     * \tparam first
-     * \tparam second
-     * \tparam next
+     * \brief   Method to assert that LOG_MAKEPRI(pri, _)... results in (pri & _)...
      */
     template<log_priorities first, log_priorities second, log_priorities... next>
-    void test_make_pri()
+    void test_make_pri(log_facilities fac
+    #ifdef _MODERN_OWO_SYSLOG_
+    = log_facilities::ftp
+    #else
+            = LOG_SYSLOG
+    #endif
+    )
     {
-        test_make_pri<first>();
-        test_make_pri<second, next...>();
+        test_make_pri<first>(fac);
+        test_make_pri<second, next...>(fac);
     }
 };
 
 TEST_F(test_log_priorities, LOG_PRI)
 {
-    #ifdef _MODERN_OWO_SYSLOG_
     test_log_pri<
+    #ifdef _MODERN_OWO_SYSLOG_
             log_priorities::emerg,
             log_priorities::alert,
             log_priorities::crit,
@@ -95,9 +95,7 @@ TEST_F(test_log_priorities, LOG_PRI)
             log_priorities::notice,
             log_priorities::info,
             log_priorities::debug
-    >();
     #else
-    test_log_pri<
             LOG_EMERG,
             LOG_ALERT,
             LOG_CRIT,
@@ -106,14 +104,15 @@ TEST_F(test_log_priorities, LOG_PRI)
             LOG_NOTICE,
             LOG_INFO,
             LOG_DEBUG
-    >();
+
     #endif
+    >();
 }
 
 TEST_F(test_log_priorities, LOG_MAKEPRI)
 {
-    #ifdef _MODERN_OWO_SYSLOG_
     test_make_pri<
+    #ifdef _MODERN_OWO_SYSLOG_
             log_priorities::emerg,
             log_priorities::alert,
             log_priorities::crit,
@@ -122,9 +121,7 @@ TEST_F(test_log_priorities, LOG_MAKEPRI)
             log_priorities::notice,
             log_priorities::info,
             log_priorities::debug
-    >();
     #else
-    test_make_pri<
             LOG_EMERG,
             LOG_ALERT,
             LOG_CRIT,
@@ -133,6 +130,6 @@ TEST_F(test_log_priorities, LOG_MAKEPRI)
             LOG_NOTICE,
             LOG_INFO,
             LOG_DEBUG
-    >();
     #endif
+    >();
 }

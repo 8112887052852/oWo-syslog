@@ -152,7 +152,8 @@ namespace syslog
 #endif // not _MODERN_OWO_SYSLOG_
 
 #ifndef _MODERN_OWO_SYSLOG_
-#define LOG_MAKEPRI(fac, pri) ((fac << 3) | pri)
+#define LO
+#define LOG_MAKEPRI(fac, pri) (fac | pri)
 #else
 
     constexpr uint8_t make_pri(const log_facilities fac, const log_priorities pri) noexcept
@@ -163,12 +164,15 @@ namespace syslog
 #endif // not _MODERN_OWO_SYSLOG_
 
 #ifndef _MODERN_OWO_SYSLOG_
-#define LOG_FAC(pri) ((pri & 0x38) >> 3)
+    /* The default header in many distros defines a weird LOG_FAC macro
+       LOG_TRUEFAC will give the correct facility value, with the original shift */
+#define LOG_TRUEFAC(pri) (pri & 0x78)
+#define LOG_FAC(pri) (LOG_TRUEFAC(pri) >> 3)
 #else
 
-    constexpr log_priorities fac(const uint8_t pri) noexcept
+    constexpr log_facilities fac(const uint8_t pri) noexcept
     {
-        return static_cast<log_priorities>(pri & 0x38);
+        return static_cast<log_facilities>(pri & 0x78);
     }
 
 #endif
