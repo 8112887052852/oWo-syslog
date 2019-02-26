@@ -12,7 +12,7 @@ set(LATEX_OUTPUT_PATH ${PROJECT_SOURCE_DIR}/documentation)
 include(CMake/CMakeLatex/UseLATEX.cmake)
 
 add_library(header SHARED)
-add_library(cheader SHARED src/header/header.cpp src/TestHeader/main.cpp)
+add_library(cheader SHARED)
 
 add_executable(TestliboWoSyslog)
 target_link_libraries(TestliboWoSyslog
@@ -28,6 +28,8 @@ target_link_libraries(TestHeader
 	asio
 	header
 	)
+target_include_directories(TestHeader PUBLIC
+		include)
 
 add_executable(TestCHeader)
 target_link_libraries(TestCHeader
@@ -36,6 +38,8 @@ target_link_libraries(TestCHeader
 	asio
 	cheader
 	)
+target_include_directories(TestCHeader PUBLIC
+		include)
 
 add_subdirectory(dependencies)
 add_subdirectory(doc)
