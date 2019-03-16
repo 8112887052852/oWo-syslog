@@ -52,12 +52,12 @@
 #endif
 
 #ifdef __cplusplus
+#include <cstdint>
 #if __cplusplus >= 201103L and not defined(DISABLE_MODERN_OWO_SYSLOG)
 #define _MODERN_OWO_SYSLOG_
-
-#include <cstdint>
-
 #endif // __cplusplus >= 201103L and not defined(DISABLE_MODERN_OWO_SYSLOG)
+#else
+#include <stdint.h>
 #endif // __cplusplus
 
 #ifdef _MODERN_OWO_SYSLOG_
@@ -122,7 +122,16 @@ namespace syslog
             LOG_UUCP = 8 << 3,
             LOG_CRON = 9 << 3,
             LOG_AUTHPRIV = 10 << 3,
-            LOG_FTP = 11 << 3
+            LOG_FTP = 11 << 3,
+            /* [12...15] are reserved codes */
+            LOG_LOCAL0 = 16 << 3,
+            LOG_LOCAL1 = 17 << 3,
+            LOG_LOCAL2 = 18 << 3,
+            LOG_LOCAL3 = 19 << 3,
+            LOG_LOCAL4 = 20 << 3,
+            LOG_LOCAL5 = 21 << 3,
+            LOG_LOCAL6 = 22 << 3,
+            LOG_LOCAL7 = 23 << 3
 #else
 // use a more modern style
                 kern = 0,
@@ -136,7 +145,16 @@ namespace syslog
         uucp = 8 << 3,
         cron = 9 << 3,
         auth_priv = 10 << 3,
-        ftp = 11 << 3
+        ftp = 11 << 3,
+        /* [12...15] are reserved codes */
+                local0 = 16 << 3,
+        local1 = 17 << 3,
+        local2 = 18 << 3,
+        local3 = 19 << 3,
+        local4 = 20 << 3,
+        local5 = 21 << 3,
+        local6 = 22 << 3,
+        local7 = 23 << 3
 #endif // not _MODERN_OWO_SYSLOG_
     };
 
@@ -152,7 +170,6 @@ namespace syslog
 #endif // not _MODERN_OWO_SYSLOG_
 
 #ifndef _MODERN_OWO_SYSLOG_
-#define LO
 #define LOG_MAKEPRI(fac, pri) (fac | pri)
 #else
 
@@ -166,19 +183,106 @@ namespace syslog
 #ifndef _MODERN_OWO_SYSLOG_
     /* The default header in many distros defines a weird LOG_FAC macro
        LOG_TRUEFAC will give the correct facility value, with the original shift */
-#define LOG_TRUEFAC(pri) (pri & 0x78)
+#define LOG_TRUEFAC(pri) (pri & 0xF8)
 #define LOG_FAC(pri) (LOG_TRUEFAC(pri) >> 3)
 #else
 
     constexpr log_facilities fac(const uint8_t pri) noexcept
     {
-        return static_cast<log_facilities>(pri & 0x78);
+        return static_cast<log_facilities>(pri & 0xF8);
     }
 
+#endif
+
+#ifdef SYSLOG_NAMES
+#ifdef _MODERN_OWO_SYSLOG_
+#else
+
+    typedef struct _code {
+            char *c_name;
+            int c_val;
+    } CODE;
+
+    CODE prioritynames[] = {
+                {"alert", LOG_ALERT},
+                {"crit", LOG_CRIT},
+                {"debug", LOG_DEBUG},
+                {"emerg", LOG_EMERG},
+                {"err", LOG_ERR},
+                {"error", LOG_ERR},
+                {"info", LOG_INFO},
+                {"notice", LOG_NOTICE},
+                {"panic", LOG_EMERG},
+                {"warn", LOG_WARNING},
+                {"warning", LOG_WARNING},
+                {0,-1}
+    };
+
+    CODE facilitynames[] = {
+           { "auth", LOG_AUTH },
+        { "authpriv", LOG_AUTHPRIV },
+        { "cron", LOG_CRON },
+        { "daemon", LOG_DAEMON },
+        { "ftp", LOG_FTP },
+        { "kern", LOG_KERN },
+        { "lpr", LOG_LPR },
+        { "mail", LOG_MAIL },
+        { "news", LOG_NEWS },
+        { "security", LOG_AUTH },
+        { "syslog", LOG_SYSLOG },
+        { "user", LOG_USER },
+        { "uucp", LOG_UUCP },
+        { "local0", LOG_LOCAL0 },
+        { "local1", LOG_LOCAL1 },
+        { "local2", LOG_LOCAL2 },
+        { "local3", LOG_LOCAL3 },
+        { "local4", LOG_LOCAL4 },
+        { "local5", LOG_LOCAL5 },
+        { "local6", LOG_LOCAL6 },
+        { "local7", LOG_LOCAL7 },
+        { 0, -1 }
+    };
+#endif
 #endif
 
 #ifdef _MODERN_OWO_SYSLOG_
 }
 #endif
 
+#ifdef _MODERN_OWO_SYSLOG_
+#define _SYSLOG_NAMESPACE ::syslog::
+#define _NO_THROW noexcept
+#else
+#define _SYSLOG_NAMESPACE
+#define _NO_THROW __THROW
+#endif
+
+#ifdef _MODERN_OWO_SYSLOG_
+namespace syslog
+{
+#endif
+#ifdef __cplusplus
+    extern "C" {
+#endif
+
+    OWOSYSLOG_API extern void closelog(void);
+
+    OWOSYSLOG_API extern void openlog(const char* ident, int option, _SYSLOG_NAMESPACE log_facilities fac);
+
+    OWOSYSLOG_API extern void setlogmask(uint8_t mask) _NO_THROW;
+
+    OWOSYSLOG_API extern void syslog(_SYSLOG_NAMESPACE log_priorities pri, const char* fmt, ...)
+    //TODO: Check format for Windows platform
+    __attribute__ ((__format__ (__printf__, 2, 3)));
+
+    OWOSYSLOG_API extern void vsyslog(_SYSLOG_NAMESPACE log_priorities pri, const char* fmt, __gnuc_va_list ap)
+    //TODO: Check format for Windows platform
+    __attribute__ ((__format__ (__printf__, 2, 0)));
+
+#ifdef __cplusplus
+    }
+#endif
+#ifdef _MODERN_OWO_SYSLOG_
+}
+#endif
 #endif // _OWO_SYSLOG_VER
