@@ -4,6 +4,8 @@
  * \brief   Test for the log_priorities enum and helper functions|macros
  */
 
+#include "TestHelpers.h"
+
 #include <gtest/gtest.h>
 #include <oWoSyslog.h>
 
@@ -43,18 +45,15 @@ struct test_log_priorities : public ::testing::Test
         test_log_pri<second, next...>();
     }
 
-    /*!
-     * \brief   Method to assert that LOG_MAKEPRI(pri, _) results in pri & _
-     * \tparam  pri The priority to test against
-     */
-    template<log_priorities pri>
-    void test_make_pri(log_facilities fac =
-    #ifdef _MODERN_OWO_SYSLOG_
-    log_facilities::ftp
-    #else
-            LOG_SYSLOG
-    #endif
-    )
+    template<log_priorities pri, log_facilities first, log_facilities second, log_facilities... next>
+    void test_make_pri_for_pri()
+    {
+        test_make_pri_for_pri<pri, first>();
+        test_make_pri_for_pri<pri, second, next...>();
+    }
+
+    template <log_priorities pri, log_facilities fac>
+    void test_make_pri_for_pri()
     #ifdef _MODERN_OWO_SYSLOG_
     {
         EXPECT_EQ(::syslog::pri(make_pri(fac, pri)), pri);
@@ -67,69 +66,32 @@ struct test_log_priorities : public ::testing::Test
     #endif
 
     /*!
+     * \brief   Method to assert that LOG_MAKEPRI(pri, _) results in pri & _
+     * \tparam  pri The priority to test against
+     */
+    template<log_priorities pri>
+    void test_make_pri()
+    {
+        test_make_pri_for_pri<pri, FACILITIES>();
+    }
+
+    /*!
      * \brief   Method to assert that LOG_MAKEPRI(pri, _)... results in (pri & _)...
      */
     template<log_priorities first, log_priorities second, log_priorities... next>
-    void test_make_pri(log_facilities fac
-    #ifdef _MODERN_OWO_SYSLOG_
-    = log_facilities::ftp
-    #else
-            = LOG_SYSLOG
-    #endif
-    )
+    void test_make_pri()
     {
-        test_make_pri<first>(fac);
-        test_make_pri<second, next...>(fac);
+        test_make_pri<first>();
+        test_make_pri<second, next...>();
     }
 };
 
 TEST_F(test_log_priorities, LOG_PRI)
 {
-    test_log_pri<
-    #ifdef _MODERN_OWO_SYSLOG_
-            log_priorities::emerg,
-            log_priorities::alert,
-            log_priorities::crit,
-            log_priorities::err,
-            log_priorities::warning,
-            log_priorities::notice,
-            log_priorities::info,
-            log_priorities::debug
-    #else
-            LOG_EMERG,
-            LOG_ALERT,
-            LOG_CRIT,
-            LOG_ERR,
-            LOG_WARNING,
-            LOG_NOTICE,
-            LOG_INFO,
-            LOG_DEBUG
-
-    #endif
-    >();
+    test_log_pri<PRIORITIES>();
 }
 
 TEST_F(test_log_priorities, LOG_MAKEPRI)
 {
-    test_make_pri<
-    #ifdef _MODERN_OWO_SYSLOG_
-            log_priorities::emerg,
-            log_priorities::alert,
-            log_priorities::crit,
-            log_priorities::err,
-            log_priorities::warning,
-            log_priorities::notice,
-            log_priorities::info,
-            log_priorities::debug
-    #else
-            LOG_EMERG,
-            LOG_ALERT,
-            LOG_CRIT,
-            LOG_ERR,
-            LOG_WARNING,
-            LOG_NOTICE,
-            LOG_INFO,
-            LOG_DEBUG
-    #endif
-    >();
+    test_make_pri<PRIORITIES>();
 }
