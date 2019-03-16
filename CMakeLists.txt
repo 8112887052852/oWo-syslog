@@ -12,7 +12,10 @@ set(LATEX_OUTPUT_PATH ${PROJECT_SOURCE_DIR}/documentation)
 include(CMake/CMakeLatex/UseLATEX.cmake)
 
 add_library(header SHARED)
+target_include_directories(header PUBLIC include)
+
 add_library(cheader SHARED)
+target_include_directories(cheader PUBLIC include)
 
 add_executable(TestliboWoSyslog)
 target_link_libraries(TestliboWoSyslog
