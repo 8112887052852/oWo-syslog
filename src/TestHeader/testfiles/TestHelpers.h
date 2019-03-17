@@ -1,0 +1,71 @@
+#pragma once
+
+#include <oWoSyslog.h>
+
+#ifdef _MODERN_OWO_SYSLOG_
+#define FACILITIES \
+_SYSLOG_NAMESPACE log_facilities::kern, \
+_SYSLOG_NAMESPACE log_facilities::user, \
+_SYSLOG_NAMESPACE log_facilities::mail, \
+_SYSLOG_NAMESPACE log_facilities::daemon, \
+_SYSLOG_NAMESPACE log_facilities::auth, \
+_SYSLOG_NAMESPACE log_facilities::syslog, \
+_SYSLOG_NAMESPACE log_facilities::lpr, \
+_SYSLOG_NAMESPACE log_facilities::news, \
+_SYSLOG_NAMESPACE log_facilities::uucp, \
+_SYSLOG_NAMESPACE log_facilities::cron, \
+_SYSLOG_NAMESPACE log_facilities::auth_priv, \
+_SYSLOG_NAMESPACE log_facilities::ftp, \
+_SYSLOG_NAMESPACE log_facilities::local0, \
+_SYSLOG_NAMESPACE log_facilities::local1, \
+_SYSLOG_NAMESPACE log_facilities::local2, \
+_SYSLOG_NAMESPACE log_facilities::local3, \
+_SYSLOG_NAMESPACE log_facilities::local4, \
+_SYSLOG_NAMESPACE log_facilities::local5, \
+_SYSLOG_NAMESPACE log_facilities::local6, \
+_SYSLOG_NAMESPACE log_facilities::local7
+#else
+#define FACILITIES \
+_SYSLOG_NAMESPACE LOG_KERN, \
+_SYSLOG_NAMESPACE LOG_USER, \
+_SYSLOG_NAMESPACE LOG_MAIL, \
+_SYSLOG_NAMESPACE LOG_DAEMON, \
+_SYSLOG_NAMESPACE LOG_AUTH, \
+_SYSLOG_NAMESPACE LOG_SYSLOG, \
+_SYSLOG_NAMESPACE LOG_LPR, \
+_SYSLOG_NAMESPACE LOG_NEWS, \
+_SYSLOG_NAMESPACE LOG_UUCP, \
+_SYSLOG_NAMESPACE LOG_CRON, \
+_SYSLOG_NAMESPACE LOG_AUTHPRIV, \
+_SYSLOG_NAMESPACE LOG_FTP, \
+_SYSLOG_NAMESPACE LOG_LOCAL0, \
+_SYSLOG_NAMESPACE LOG_LOCAL1, \
+_SYSLOG_NAMESPACE LOG_LOCAL2, \
+_SYSLOG_NAMESPACE LOG_LOCAL3, \
+_SYSLOG_NAMESPACE LOG_LOCAL4, \
+_SYSLOG_NAMESPACE LOG_LOCAL5, \
+_SYSLOG_NAMESPACE LOG_LOCAL6, \
+_SYSLOG_NAMESPACE LOG_LOCAL7
+#endif
+
+#ifdef _MODERN_OWO_SYSLOG_
+#define PRIORITIES \
+_SYSLOG_NAMESPACE log_priorities::emerg, \
+_SYSLOG_NAMESPACE log_priorities::alert, \
+_SYSLOG_NAMESPACE log_priorities::crit, \
+_SYSLOG_NAMESPACE log_priorities::err, \
+_SYSLOG_NAMESPACE log_priorities::warning, \
+_SYSLOG_NAMESPACE log_priorities::notice, \
+_SYSLOG_NAMESPACE log_priorities::info, \
+_SYSLOG_NAMESPACE log_priorities::debug
+#else
+#define PRIORITIES \
+_SYSLOG_NAMESPACE LOG_EMERG, \
+_SYSLOG_NAMESPACE LOG_ALERT, \
+_SYSLOG_NAMESPACE LOG_CRIT, \
+_SYSLOG_NAMESPACE LOG_ERR, \
+_SYSLOG_NAMESPACE LOG_WARNING, \
+_SYSLOG_NAMESPACE LOG_NOTICE, \
+_SYSLOG_NAMESPACE LOG_INFO, \
+_SYSLOG_NAMESPACE LOG_DEBUG
+#endif

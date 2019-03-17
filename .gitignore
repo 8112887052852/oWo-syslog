@@ -41,9 +41,3 @@ doc/*.log
 doc/*.dvi
 doc/*.synctex.gz
 
-# output dirs
-build/
-build.debug/
-build.release/
-build-debug/
-build-release/
